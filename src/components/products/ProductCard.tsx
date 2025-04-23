@@ -2,32 +2,34 @@ import ProductCardButton from "./ProductCardButton";
 
 export interface ProductCardProps {
   id: string;
-  img: string;
-  title: string;
-  price: string;
+  // img: string;
+  name: string;
+  price: number;
   quantity: number;
-  description: string;
+  imageUrl?: string;
+  description?: string;
 }
 
 export default function ProductCard({
   id,
-  img,
-  title,
+  // img,
+  name,
   price,
   quantity,
   description,
+  imageUrl,
 }: ProductCardProps) {
   return (
     <div
       className="
-        bg-white rounded-3xl shadow-lg p-2.5 h-full flex flex-col
+        rounded-3xl shadow-lg p-2.5 h-full flex flex-col bg-gray-50 dark:bg-gray-900
         group gap-5 transition-all animate-fade-in relative
       "
     >
-      <div className="relative rounded-2xl overflow-hidden aspect-[1/1] bg-gray-100">
+      <div className="relative rounded-2xl overflow-hidden aspect-[1/1]">
         <img
-          src={img}
-          alt={title}
+          src={imageUrl}
+          alt={name}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-5">
@@ -42,8 +44,8 @@ export default function ProductCard({
           {/* <ArrowRight className="w-5 h-5 text-gray-700" /> */}
           <ProductCardButton
             id={id}
-            img={img}
-            title={title}
+            imageUrl={imageUrl ?? ""}
+            name={name}
             price={price}
             quantity={quantity}
             description={description}
@@ -54,7 +56,7 @@ export default function ProductCard({
       <div className="flex flex-col gap-2 mt-auto mb-2.5 px-1">
         <div className="flex justify-between">
           <span className="bg-gray-800/70 text-white px-3 py-1.5 rounded-full text-xs font-medium select-none">
-            {title}
+            {name}
           </span>
           <span className="bg-yellow-500/90 text-gray-900 px-3 py-1.5 rounded-full text-xs font-semibold ml-2 select-none">
             ${price}

@@ -24,33 +24,19 @@ export default function CartForm() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-3">
       <Form {...form}>
         <InputWithLabel<TProductToCart>
           fieldTitle="Quantity"
           nameInSchema={"toCartQuantity"}
+          type="number"
         />
 
-        <div className="flex gap-2">
-          <Button
-            type="submit"
-            className="w-2/4"
-            variant="default"
-            title="Save"
-          >
-            {/* uncomment after initializing tanstack */}
-            {/* {isSaving ? <LoaderCircle className="animate-spin" /> : "Save"} */}
-          </Button>
-
-          <Button
-            type="button"
-            variant="destructive"
-            title="Reset"
-            onClick={resetForm}
-          >
-            Reset
-          </Button>
-        </div>
+        <Button type="submit" className="w-2/4" variant="default" title="Save">
+          Cart
+          {/* uncomment after initializing tanstack */}
+          {/* {isSaving ? <LoaderCircle className="animate-spin" /> : "Save"} */}
+        </Button>
       </Form>
     </div>
   );

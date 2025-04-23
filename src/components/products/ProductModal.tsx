@@ -4,21 +4,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ZoomIn, ZoomOut } from "lucide-react";
 import CartForm from "./CartForm";
+import { cn } from "@/lib/utils";
 
 interface ProductModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  img: string;
-  title: string;
-  price: string;
-  description: string;
+  imageUrl?: string;
+  name: string;
+  price: number;
+  description?: string;
 }
 
 export default function ProductModal({
   open,
   onOpenChange,
-  img,
-  title,
+  imageUrl,
+  name,
   price,
   description,
 }: ProductModalProps) {
@@ -166,10 +167,19 @@ export default function ProductModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[625px]">
+      {/* <DialogContent className="sm:max-w-[625px]"> */}
+      <DialogContent
+        className={cn(
+          "sm:max-w-[625px]",
+          "data-[state=open]:animate-in-warp",
+          "data-[state=closed]:animate-out-warp",
+          "data-[state=closed]:fade-out-0",
+          "data-[state=open]:fade-in-0"
+        )}
+      >
         <DialogTitle>Add To Cart</DialogTitle>
         <div className="flex justify-between items-start p-6 gap-5">
-          <div className="flex-1 flex flex-col items-center justify-center relative bg-gray-50">
+          <div className="flex-1 flex flex-col items-center justify-center relative">
             <div
               className="rounded-xl overflow-hidden shadow border flex items-center justify-center aspect-square mb-3 bg-white"
               style={{
@@ -178,13 +188,13 @@ export default function ProductModal({
               }}
             >
               <div
-                className="relative rounded-2xl overflow-hidden aspect-[1/1] bg-gray-100"
+                className="relative rounded-2xl overflow-hidden aspect-[1/1]"
                 ref={containerRef}
               >
                 <img
                   ref={imageRef}
-                  src={img}
-                  alt={title}
+                  src={imageUrl ?? ""}
+                  alt={name}
                   style={{
                     transform: `scale(${zoom}) translate(${positionX}px, ${positionY}px)`,
                     transition: "transform 0.2s ease",
@@ -224,8 +234,8 @@ export default function ProductModal({
               </Button>
             </div>
           </div>
-          <div className="flex flex-col items-start py-2">
-            <h3 className="text-xl font-semibold">{title}</h3>
+          <div className="flex flex-col gap-2 items-start py-2">
+            <h3 className="text-xl font-semibold">{name}</h3>
             <p className="text-gray-600">{`$ ${price}`}</p>
             <p className="text-sm font-light text-black">{description}</p>
             <CartForm />
