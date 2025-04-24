@@ -4,6 +4,7 @@ import { seedProductsAction } from "@/actions/product.actions";
 import { Button } from "@/components/ui/button";
 import { useCustomAction } from "@/lib/hooks/action.hooks";
 import { LoaderCircle } from "lucide-react";
+import { toast } from "sonner";
 
 export default function SeedProductsButton() {
   const {
@@ -13,7 +14,12 @@ export default function SeedProductsButton() {
     reset: resetSeed,
   } = useCustomAction({
     action: seedProductsAction,
-    errorMessage: "Seeding products failed",
+    onSuccess: () => {
+      toast("Successfully populated data :)");
+    },
+    onError: () => {
+      toast("Data already populated!");
+    },
   });
 
   async function seedProducts() {

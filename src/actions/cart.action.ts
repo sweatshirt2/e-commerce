@@ -39,6 +39,7 @@ async function feedCart(cartData: z.infer<typeof addToCartSchema>) {
       select: {
         cartProducts: {
           select: {
+            id: true,
             productId: true,
             quantity: true,
           },
@@ -67,9 +68,15 @@ async function feedCart(cartData: z.infer<typeof addToCartSchema>) {
         existingCart.cartProducts.map((product) => product.productId)
       );
 
-      const updatedCartProducts = existingCart.cartProducts.filter((product) =>
-        cartDataProductsIds.has(product.productId)
-      );
+      const updatedCartProducts = existingCart.cartProducts
+        .filter((product) => cartDataProductsIds.has(product.productId))
+        .map((product) => ({
+          id: product.id,
+          quantity:
+            (cartData.products.find(
+              (cartProduct) => cartProduct.productId === product.productId
+            )?.quantity ?? 0) + product.quantity,
+        }));
 
       const newCartProducts = cartData.products.filter(
         (product) => !existingCartProductsIds.has(product.productId)
@@ -85,7 +92,7 @@ async function feedCart(cartData: z.infer<typeof addToCartSchema>) {
                 quantity: cartProduct.quantity,
               })),
               update: updatedCartProducts.map((cartProduct) => ({
-                where: { id: cartProduct.productId },
+                where: { id: cartProduct.id },
                 data: { quantity: cartProduct.quantity },
               })),
             },
