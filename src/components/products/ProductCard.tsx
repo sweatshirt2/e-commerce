@@ -40,7 +40,6 @@ export default function ProductCard({
           className="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow hover:bg-amber-100 transition z-10"
           style={{ boxShadow: "0 2px 8px 0 rgba(0,0,0,0.09)" }}
         >
-          {/* <ArrowRight className="w-5 h-5 text-gray-700" /> */}
           <ProductCardButton
             id={id}
             imageUrl={imageUrl ?? ""}

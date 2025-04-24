@@ -1,8 +1,6 @@
 import { useFetchProducts } from "@/lib/hooks/product.hooks";
 import ProductCard from "./ProductCard";
 import { TProduct } from "@/utils/types/a.types";
-import axiosInstance from "@/lib/axios";
-import { products } from "@/context/data-source";
 
 type ProductGridProps = {
   products?: TProduct[];
