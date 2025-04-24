@@ -1,5 +1,7 @@
 import { Lock, Heart } from "lucide-react";
-import UserProfile from "./UserProfile";
+import UserProfile from "../user/UserProfile";
+import { ModeToggle } from "../theme-toggle";
+import UserCart from "../user/UserCart";
 
 const navLinks = [
   { label: "Home", href: "#" },
@@ -11,24 +13,23 @@ const navLinks = [
 
 export default function Header() {
   return (
-    <header className="bg-white rounded-b-3xl shadow-md px-8 py-4 flex items-center justify-between w-full">
-      {/* Logo */}
+    <header className="bg-white dark:bg-black rounded-b-3xl shadow-md px-8 py-4 flex items-center justify-between w-full">
       <div className="flex items-center gap-4">
-        <div className="bg-black text-white font-bold text-2xl px-6 py-2 rounded-lg tracking-widest">
-          LOGO
+        <div className="bg-black dark:bg-white  text-white dark:text-black font-bold text-2xl px-6 py-2 rounded-lg tracking-widest">
+          ULearna
         </div>
       </div>
       {/* Nav */}
       <nav>
-        <ul className="flex items-center gap-7 text-gray-500 font-medium">
+        <ul className="flex items-center gap-7 text-gray-500 dark:text-gray-200 font-medium">
           {navLinks.map((link) => (
             <li key={link.label}>
               <a
                 href={link.href}
                 className={
                   link.active
-                    ? "font-bold text-gray-900 underline underline-offset-4"
-                    : "hover:text-gray-900 transition-colors"
+                    ? "font-bold text-gray-900 dark:text-gray-200 underline underline-offset-4"
+                    : "hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
                 }
               >
                 {link.label}
@@ -37,15 +38,14 @@ export default function Header() {
           ))}
         </ul>
       </nav>
-      {/* Right side: icons, user */}
       <div className="flex items-center gap-4">
-        <button className="p-2 hover:bg-gray-100 rounded-full">
-          <Lock className="w-5 h-5 text-gray-700" />
-        </button>
-        <button className="p-2 hover:bg-gray-100 rounded-full">
-          <Heart className="w-5 h-5 text-gray-700" />
-        </button>
+        <div className="text-black dark:text-white">
+          <ModeToggle />
+        </div>
         <UserProfile />
+        <div className="text-black dark:text-white">
+          <UserCart />
+        </div>
       </div>
     </header>
   );

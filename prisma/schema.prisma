@@ -33,6 +33,7 @@ model Product {
   price        Decimal         @db.Money
   quantity     Int
   description  String?
+  imageUrl     String?
   category     ProductCategory
   cartProducts CartProduct[]
   images       Image[]

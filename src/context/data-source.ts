@@ -1,0 +1,62 @@
+export const users = [
+  { name: "John Doe", userId: "john-doe" },
+  { name: "Jane Doe", userId: "jane-doe" },
+  { name: "Mohammed Ali", userId: "mohammed-ali" },
+];
+
+export const products = [
+  {
+    id: "1",
+    name: "Sophisticated comfort",
+    quantity: 30,
+    price: 1320,
+    imageUrl: "../../../images/assessment-sofa1.jpg",
+    description: "lorem ipsum dolor amet lorem ipsum dolor amet lorem ip",
+    category: "HOME",
+  },
+  {
+    id: "2",
+    name: "Modern Elegance",
+    quantity: 30,
+    price: 980,
+    imageUrl: "../../../images/assessment-sofa1.jpg",
+    description: "lorem ipsum dolor amet lorem ipsum dolor amet lorem ip",
+    category: "HOME",
+  },
+  {
+    id: "3",
+    name: "Refined Simplicity",
+    quantity: 30,
+    price: 720,
+    imageUrl: "../../../images/assessment-sofa1.jpg",
+    description: "lorem ipsum dolor amet lorem ipsum dolor amet lorem ip",
+    category: "HOME",
+  },
+  {
+    id: "4",
+    name: "Modern Elegance",
+    quantity: 30,
+    price: 980,
+    imageUrl: "../../../images/assessment-sofa1.jpg",
+    description: "lorem ipsum dolor amet lorem ipsum dolor amet lorem ip",
+    category: "HOME",
+  },
+  {
+    id: "5",
+    name: "Sophisticated comfort",
+    quantity: 30,
+    price: 1320,
+    imageUrl: "../../../images/assessment-sofa1.jpg",
+    description: "lorem ipsum dolor amet lorem ipsum dolor amet lorem ip",
+    category: "HOME",
+  },
+  {
+    id: "6",
+    name: "Refined Simplicity",
+    quantity: 30,
+    price: 720,
+    imageUrl: "../../../images/assessment-sofa1.jpg",
+    description: "lorem ipsum dolor amet lorem ipsum dolor amet lorem ip",
+    category: "HOME",
+  },
+];

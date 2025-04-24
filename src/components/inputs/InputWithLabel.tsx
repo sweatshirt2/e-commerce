@@ -32,7 +32,7 @@ export default function InputWithLabel<T>({
       render={({ field }) => (
         <FormItem className="text-base">
           <FormLabel className="text-base" htmlFor={nameInSchema}>
-            <h5 className="text-sm">{fieldTitle}</h5>
+            <h3 className="text-xs">{fieldTitle}</h3>
           </FormLabel>
 
           <FormControl>
