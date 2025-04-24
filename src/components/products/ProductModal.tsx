@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 interface ProductModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  id: string;
   imageUrl?: string;
   name: string;
   price: number;
@@ -19,6 +20,7 @@ export default function ProductModal({
   open,
   onOpenChange,
   imageUrl,
+  id,
   name,
   price,
   description,
@@ -165,6 +167,10 @@ export default function ProductModal({
     onOpenChange(false);
   }
 
+  const closeModal = () => {
+    onOpenChange(false);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {/* <DialogContent className="sm:max-w-[625px]"> */}
@@ -238,7 +244,7 @@ export default function ProductModal({
             <h3 className="text-xl font-semibold">{name}</h3>
             <p className="text-gray-600">{`$ ${price}`}</p>
             <p className="text-sm font-light text-black">{description}</p>
-            <CartForm />
+            <CartForm productId={id} closeModal={closeModal} />
           </div>
         </div>
       </DialogContent>

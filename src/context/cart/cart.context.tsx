@@ -1,88 +1,56 @@
-import React, {
+"use client";
+
+import {
   createContext,
   useState,
   useContext,
   useEffect,
   ReactNode,
+  useReducer,
 } from "react";
 import { useUser } from "../user/user.context";
-import { TUserCart } from "./cart.type";
+import { TCartAction, TCartContextType, TUserCart } from "./cart.type";
+import { cartReducer } from "./cart.reducer";
 
-// Create the Cart Context
-type CartContextType = {
-  cart: TUserCart;
-  setCart: React.Dispatch<React.SetStateAction<TUserCart>>;
-  addToCart: (productId: string) => void;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-  clearCart: () => void;
-};
-
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext = createContext<TCartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const { user } = useUser();
-  const [cart, setCart] = useState<TUserCart>({
+  const [cart, dispatchCart] = useReducer(cartReducer, {
     userId: user.userId,
     products: [],
   });
 
+  // Update cart's userId when the user changes
   useEffect(() => {
-    setCart((prevCart) => ({ ...prevCart, userId: user.userId }));
+    dispatchCart({ type: "CLEAR_CART" }); // Clear existing cart on user change
+    dispatchCart({ type: "SET_USER_ID", payload: { userId: user.userId } });
   }, [user.userId]);
 
-  const addToCart = (productId: string) => {
-    setCart((prevCart) => {
-      if (!prevCart.userId) {
-        return prevCart;
-      }
-      const existingProductIndex = prevCart.products.findIndex(
-        (item) => item.productId === productId
-      );
-
-      if (existingProductIndex >= 0) {
-        const newProducts = [...prevCart.products];
-        newProducts[existingProductIndex].quantity += 1;
-        return { ...prevCart, products: newProducts };
-      } else {
-        return {
-          ...prevCart,
-          products: [...prevCart.products, { productId, quantity: 1 }],
-        };
-      }
-    });
+  const upsertItem = (productId: string, quantity: number) => {
+    dispatchCart({ type: "UPSERT_ITEM", payload: { productId, quantity } });
   };
 
   const removeFromCart = (productId: string) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      products: prevCart.products.filter(
-        (item) => item.productId !== productId
-      ),
-    }));
+    dispatchCart({ type: "REMOVE_ITEM", payload: { productId } });
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
-    setCart((prevCart) => {
-      const newProducts = prevCart.products.map((item) =>
-        item.productId === productId ? { ...item, quantity } : item
-      );
-      return { ...prevCart, products: newProducts };
-    });
+    dispatchCart({ type: "UPDATE_QUANTITY", payload: { productId, quantity } });
   };
 
   const clearCart = () => {
-    setCart((prevCart) => ({ ...prevCart, products: [] }));
+    dispatchCart({ type: "CLEAR_CART" });
   };
 
   return (
     <CartContext.Provider
       value={{
         cart,
-        setCart,
-        addToCart,
+        dispatchCart,
+        upsertItem,
         removeFromCart,
         updateQuantity,
         clearCart,

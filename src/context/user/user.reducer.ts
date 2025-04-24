@@ -1,8 +1,4 @@
-import { TUserSession } from "./user.type";
-
-type UserAction =
-  | { type: "SET_USER"; payload: TUserSession }
-  | { type: "CLEAR_USER" };
+import { TUserSession, UserAction } from "./user.type";
 
 export const userReducer = (
   state: TUserSession,

@@ -1,37 +1,29 @@
-import { TUserCart } from "./cart.type";
-
-type CartAction =
-  | { type: "ADD_ITEM"; payload: { productId: string } }
-  | { type: "REMOVE_ITEM"; payload: { productId: string } }
-  | {
-      type: "UPDATE_QUANTITY";
-      payload: { productId: string; quantity: number };
-    }
-  | { type: "CLEAR_CART" };
+import { TCartAction, TUserCart } from "./cart.type";
 
 export const cartReducer = (
   state: TUserCart,
-  action: CartAction
+  action: TCartAction
 ): TUserCart => {
   switch (action.type) {
-    case "ADD_ITEM":
+    case "SET_USER_ID":
+      return { ...state, userId: action.payload.userId };
+    case "UPSERT_ITEM": {
+      const { productId, quantity } = action.payload;
       const existingProductIndex = state.products.findIndex(
-        (item) => item.productId === action.payload.productId
+        (item) => item.productId === productId
       );
 
       if (existingProductIndex >= 0) {
         const newProducts = [...state.products];
-        newProducts[existingProductIndex].quantity += 1;
+        newProducts[existingProductIndex].quantity += quantity;
         return { ...state, products: newProducts };
       } else {
         return {
           ...state,
-          products: [
-            ...state.products,
-            { productId: action.payload.productId, quantity: 1 },
-          ],
+          products: [...state.products, { productId, quantity }],
         };
       }
+    }
     case "REMOVE_ITEM":
       return {
         ...state,

@@ -1,3 +1,7 @@
+export type UserAction =
+  | { type: "SET_USER"; payload: TUserSession }
+  | { type: "CLEAR_USER" };
+
 export type TUserSession = {
   userId: string | null;
   name: string | null;
@@ -5,5 +9,5 @@ export type TUserSession = {
 
 export type UserContextType = {
   user: TUserSession;
-  setUser: React.Dispatch<React.SetStateAction<TUserSession>>;
+  dispatchUser: React.Dispatch<UserAction>;
 };
