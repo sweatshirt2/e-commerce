@@ -5,8 +5,8 @@ export type TProduct = {
   name: string;
   price: number;
   quantity: number;
-  imageUrl?: string;
-  description?: string;
+  imageUrl?: string | null;
+  description?: string | null;
   category: ProductCategory;
 };
 

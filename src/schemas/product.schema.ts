@@ -17,7 +17,7 @@ export const productSchema = z.object({
 export const addProductToCartSchema = z
   .object({
     quantity: z.number(),
-    toCartQuantity: z.number().min(1),
+    toCartQuantity: z.number(),
   })
   .refine((data) => {
     return data.quantity >= data.toCartQuantity;

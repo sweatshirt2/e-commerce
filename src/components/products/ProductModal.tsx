@@ -10,10 +10,10 @@ interface ProductModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   id: string;
-  imageUrl?: string;
+  imageUrl?: string | null;
   name: string;
   price: number;
-  description?: string;
+  description?: string | null;
 }
 
 export default function ProductModal({
@@ -244,7 +244,11 @@ export default function ProductModal({
             <h3 className="text-xl font-semibold">{name}</h3>
             <p className="text-gray-600">{`$ ${price}`}</p>
             <p className="text-sm font-light text-black">{description}</p>
-            <CartForm productId={id} closeModal={closeModal} />
+            <CartForm
+              productName={name}
+              productId={id}
+              closeModal={closeModal}
+            />
           </div>
         </div>
       </DialogContent>

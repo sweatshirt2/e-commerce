@@ -2,12 +2,11 @@ import ProductCardButton from "./ProductCardButton";
 
 export interface ProductCardProps {
   id: string;
-  // img: string;
   name: string;
   price: number;
   quantity: number;
-  imageUrl?: string;
-  description?: string;
+  imageUrl?: string | null;
+  description?: string | null;
 }
 
 export default function ProductCard({
@@ -28,7 +27,7 @@ export default function ProductCard({
     >
       <div className="relative rounded-2xl overflow-hidden aspect-[1/1]">
         <img
-          src={imageUrl}
+          src={imageUrl ?? undefined}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />

@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./db/ulearna.db"
 }
 
 model User {
@@ -30,7 +30,7 @@ model User {
 model Product {
   id           String          @id @default(uuid())
   name         String
-  price        Decimal         @db.Money
+  price        Decimal
   quantity     Int
   description  String?
   imageUrl     String?

@@ -34,8 +34,11 @@ export default function UserProfile() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {users.map((userItem) => (
-            <DropdownMenuItem onClick={handleSetUser(userItem)}>
+          {users.map((userItem, index) => (
+            <DropdownMenuItem
+              key={`user-${index}`}
+              onClick={handleSetUser(userItem)}
+            >
               {userItem.name}
             </DropdownMenuItem>
           ))}
