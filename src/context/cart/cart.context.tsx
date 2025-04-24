@@ -23,21 +23,27 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
     products: [],
   });
 
-  // Update cart's userId when the user changes
   useEffect(() => {
-    dispatchCart({ type: "CLEAR_CART" }); // Clear existing cart on user change
+    dispatchCart({ type: "CLEAR_CART" });
     dispatchCart({ type: "SET_USER_ID", payload: { userId: user.userId } });
   }, [user.userId]);
 
-  const upsertItem = (productId: string, quantity: number) => {
-    dispatchCart({ type: "UPSERT_ITEM", payload: { productId, quantity } });
+  const upsertItem = (
+    productName: string,
+    productId: string,
+    quantity: string
+  ) => {
+    dispatchCart({
+      type: "UPSERT_ITEM",
+      payload: { productName, productId, quantity },
+    });
   };
 
   const removeFromCart = (productId: string) => {
     dispatchCart({ type: "REMOVE_ITEM", payload: { productId } });
   };
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = (productId: string, quantity: string) => {
     dispatchCart({ type: "UPDATE_QUANTITY", payload: { productId, quantity } });
   };
 

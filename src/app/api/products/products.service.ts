@@ -19,14 +19,20 @@ export class ProductsService {
 
   async findAllProducts() {
     try {
+      const products: TProduct[] = [];
       await this.prisma.$transaction(async (tx) => {
-        const products = await tx.product.findMany();
+        const fetchedProducts = await tx.product.findMany();
 
-        return products.map((product) => ({
-          ...product,
-          price: product.price.toNumber(),
-        }));
+        for (const product of fetchedProducts) {
+          products.push({
+            ...product,
+            imageUrl: product.imageUrl,
+            price: product.price.toNumber(),
+          });
+        }
       });
+
+      return products;
     } catch (error) {
       throw error;
     }

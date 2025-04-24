@@ -1,17 +1,19 @@
-import { Lock, Heart } from "lucide-react";
+// app/example/page.tsx
+import { headers } from "next/headers";
 import UserProfile from "../user/UserProfile";
 import { ModeToggle } from "../theme-toggle";
 import UserCart from "../user/UserCart";
+import HeaderItem from "./HeaderItem";
 
 const navLinks = [
-  { label: "Home", href: "#" },
-  { label: "Catalogue", href: "#", active: true },
-  { label: "About Us", href: "#" },
-  { label: "FAQ", href: "#" },
-  { label: "Contact", href: "#" },
+  { label: "Home", href: "" },
+  { label: "Catalogue", href: "/products" },
+  { label: "Dashboard", href: "/dashboard" },
+  // { label: "FAQ", href: "#" },
+  // { label: "Contact", href: "#" },
 ];
 
-export default function Header() {
+export default async function Header() {
   return (
     <header className="bg-white dark:bg-black rounded-b-3xl shadow-md px-8 py-4 flex items-center justify-between w-full">
       <div className="flex items-center gap-4">
@@ -19,22 +21,15 @@ export default function Header() {
           ULearna
         </div>
       </div>
-      {/* Nav */}
+
       <nav>
         <ul className="flex items-center gap-7 text-gray-500 dark:text-gray-200 font-medium">
-          {navLinks.map((link) => (
-            <li key={link.label}>
-              <a
-                href={link.href}
-                className={
-                  link.active
-                    ? "font-bold text-gray-900 dark:text-gray-200 underline underline-offset-4"
-                    : "hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
-                }
-              >
-                {link.label}
-              </a>
-            </li>
+          {navLinks.map((link, index) => (
+            <HeaderItem
+              key={`header-link-${index}`}
+              label={link.label}
+              href={link.href}
+            />
           ))}
         </ul>
       </nav>

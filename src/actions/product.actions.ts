@@ -110,12 +110,55 @@ async function seedProducts() {
     },
   ];
 
+  const users = [
+    {
+      id: "john-doe",
+      email: "johndoe@email.com",
+      name: "John Doe",
+      password: "JohnDoe123Ulearna",
+    },
+    {
+      id: "jane-doe",
+      email: "janedoe@email.com",
+      name: "Jane Doe",
+      password: "JaneDoe123Ulearna",
+    },
+    {
+      id: "mohamed-salah",
+      email: "mohamedsalah@email.com",
+      name: "Mohamed Salah",
+      password: "MohamedSalah123Ulearna",
+    },
+  ];
+
   try {
     const prismaClient = new PrismaClient();
 
     await prismaClient.product.createMany({
       data: furnitureItems,
     });
+
+    await prismaClient.user.createMany({
+      data: users,
+    });
+
+    const createdUsers = await prismaClient.user.findMany({
+      select: {
+        id: true,
+      },
+    });
+
+    for (const createdUser of createdUsers) {
+      await prismaClient.cart.create({
+        data: {
+          userId: createdUser.id,
+        },
+      });
+    }
+
+    return {
+      message: "Data Seeded Successfully!",
+    };
   } catch (error) {
     console.log(error);
     throw error;

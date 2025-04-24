@@ -1,7 +1,7 @@
 export const users = [
   { name: "John Doe", userId: "john-doe" },
   { name: "Jane Doe", userId: "jane-doe" },
-  { name: "Mohammed Ali", userId: "mohammed-ali" },
+  { name: "Mohamed Salah", userId: "mohamed-salah" },
 ];
 
 export const products = [

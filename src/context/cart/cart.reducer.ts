@@ -8,19 +8,23 @@ export const cartReducer = (
     case "SET_USER_ID":
       return { ...state, userId: action.payload.userId };
     case "UPSERT_ITEM": {
-      const { productId, quantity } = action.payload;
+      console.log("in upsert");
+      const { productName, productId, quantity } = action.payload;
       const existingProductIndex = state.products.findIndex(
         (item) => item.productId === productId
       );
 
       if (existingProductIndex >= 0) {
         const newProducts = [...state.products];
-        newProducts[existingProductIndex].quantity += quantity;
+        newProducts[existingProductIndex].quantity += parseInt(quantity);
         return { ...state, products: newProducts };
       } else {
         return {
           ...state,
-          products: [...state.products, { productId, quantity }],
+          products: [
+            ...state.products,
+            { productName, productId, quantity: parseInt(quantity) },
+          ],
         };
       }
     }
@@ -36,7 +40,7 @@ export const cartReducer = (
         ...state,
         products: state.products.map((item) =>
           item.productId === action.payload.productId
-            ? { ...item, quantity: action.payload.quantity }
+            ? { ...item, quantity: parseInt(action.payload.quantity) }
             : item
         ),
       };

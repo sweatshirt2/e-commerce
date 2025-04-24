@@ -9,17 +9,19 @@ type ProductGridProps = {
 };
 
 export default async function ProductGrid() {
-  // const res = await axiosInstance(`/products`);
-  // console.log(res.data);
-  // const { data: products } = res;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/api";
+
+  const res = await fetch(`${baseUrl}/products`, {
+    next: { revalidate: 60 },
+  });
+
+  const data: TProduct[] = await res.json();
 
   return (
     <div className="dark:bg-transparent bg-orange-50 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7 mt-2 p-10">
-      {/* {data.map((prod, idx) => (
+      {data.map((prod, idx) => (
         <ProductCard key={idx} {...prod} />
-      ))} */}
-      {products.map((prod, index) => (
-        <ProductCard key={index} {...prod} />
       ))}
     </div>
   );

@@ -9,15 +9,21 @@ import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
-import { useCart } from "@/context";
+import { useCart, useUser } from "@/context";
 
 type TCartFormProps = {
+  productName: string;
   productId: string;
   closeModal: () => void;
 };
 
-export default function CartForm({ productId, closeModal }: TCartFormProps) {
+export default function CartForm({
+  productName,
+  productId,
+  closeModal,
+}: TCartFormProps) {
   const { dispatchCart } = useCart();
+  const { user } = useUser();
 
   const defaultValues = { toCartQuantity: 1 };
 
@@ -32,9 +38,19 @@ export default function CartForm({ productId, closeModal }: TCartFormProps) {
   };
 
   const submit = () => {
+    if (!user || !user.userId) {
+      console.log("Please select a user");
+
+      return;
+    }
+
     dispatchCart({
       type: "UPSERT_ITEM",
-      payload: { productId, quantity: form.getValues().toCartQuantity },
+      payload: {
+        productName,
+        productId,
+        quantity: form.getValues().toCartQuantity.toString(),
+      },
     });
     closeModal();
   };
