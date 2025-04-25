@@ -108,7 +108,9 @@ export default async function DashboardPage() {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/api";
 
-  const res = await fetch(`${baseUrl}/analytics`);
+  const res = await fetch(`${baseUrl}/analytics`, {
+    cache: "no-store",
+  });
 
   const data: {
     productsAnalytics: TProductSales;

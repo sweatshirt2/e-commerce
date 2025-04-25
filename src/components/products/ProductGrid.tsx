@@ -10,7 +10,9 @@ export default async function ProductGrid() {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/api";
 
-  const res = await fetch(`${baseUrl}/products`);
+  const res = await fetch(`${baseUrl}/products`, {
+    cache: "no-store",
+  });
 
   const data: TProduct[] = await res.json();
 
