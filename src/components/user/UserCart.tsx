@@ -11,10 +11,12 @@ import { LoaderCircle, ShoppingCart } from "lucide-react";
 import { products, useCart, useUser } from "@/context";
 import { useCustomAction } from "@/lib/hooks/action.hooks";
 import { feedCartAction } from "@/actions/cart.action";
+import { cartReducer } from "../../context/cart/cart.reducer";
+import { toast } from "sonner";
 
 export default function UserCart() {
   const { user } = useUser();
-  const { cart } = useCart();
+  const { cart, dispatchCart } = useCart();
 
   const totalItems = cart.products.reduce(
     (acc, item) => acc + item.quantity,
@@ -28,7 +30,13 @@ export default function UserCart() {
     reset: resetFeed,
   } = useCustomAction({
     action: feedCartAction,
-    errorMessage: "Feeding  failed",
+    onSuccess: () => {
+      dispatchCart({ type: "CLEAR_CART" });
+      toast("Success", { description: "Cart updated successfully :)" });
+    },
+    onError: () => {
+      toast("Error", { description: "Error updating cart :(" });
+    },
   });
 
   async function seedProducts() {

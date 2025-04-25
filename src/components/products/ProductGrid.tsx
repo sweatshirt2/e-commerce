@@ -1,8 +1,6 @@
 import { useFetchProducts } from "@/lib/hooks/product.hooks";
 import ProductCard from "./ProductCard";
 import { TProduct } from "@/utils/types/a.types";
-import axiosInstance from "@/lib/axios";
-import { products } from "@/context/data-source";
 
 type ProductGridProps = {
   products?: TProduct[];
@@ -13,7 +11,7 @@ export default async function ProductGrid() {
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/api";
 
   const res = await fetch(`${baseUrl}/products`, {
-    next: { revalidate: 60 },
+    next: { revalidate: 5 },
   });
 
   const data: TProduct[] = await res.json();

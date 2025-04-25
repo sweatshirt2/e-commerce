@@ -8,6 +8,10 @@ export type TProduct = {
   imageUrl?: string | null;
   description?: string | null;
   category: ProductCategory;
+  productColors: {
+    filePath: string;
+    color: string;
+  }[];
 };
 
 export type ICartProduct = {

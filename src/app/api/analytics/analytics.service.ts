@@ -1,7 +1,86 @@
+import { logger } from "@/utils/logger";
 import { PrismaClient } from "@prisma/client";
 
-export class CustomersService {
+export class AnalyticsService {
   constructor(private prisma: PrismaClient) {}
+
+  async getProductSales() {
+    try {
+      const products = await this.prisma.product.findMany({
+        select: {
+          id: true,
+          name: true,
+          cartProducts: {
+            select: {
+              quantity: true,
+            },
+          },
+        },
+      });
+
+      const calculatedProducts = products.map((product) => {
+        return {
+          id: product.id,
+          name: product.name,
+          sold: product.cartProducts.reduce((acc, cartProduct) => {
+            return acc + cartProduct.quantity;
+          }, 0),
+        };
+      });
+
+      return calculatedProducts;
+    } catch (error) {
+      logger({
+        type: "server action error in analytics service line 34",
+        message: error,
+      });
+      throw new Error("Error getting products analytics");
+    }
+  }
+
+  async getUserConsumption() {
+    try {
+      const users = await this.prisma.user.findMany({
+        select: {
+          id: true,
+          name: true,
+          cart: {
+            select: {
+              cartProducts: {
+                select: {
+                  quantity: true,
+                  product: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      const calculatedUsers = users.map((user) => {
+        return {
+          id: user.id,
+          name: user.name,
+          purchases:
+            user.cart?.cartProducts.reduce((acc, cartProduct) => {
+              return acc + cartProduct.quantity;
+            }, 0) ?? 0,
+        };
+      });
+
+      return calculatedUsers.sort((a, b) => b.purchases - a.purchases);
+    } catch (error) {
+      logger({
+        type: "server action error in anaalytics service line 78",
+        message: error,
+      });
+      throw new Error("Error getting products analytics");
+    }
+  }
 
   async getProductsAnalytics() {
     const products = await this.prisma.product.findMany({

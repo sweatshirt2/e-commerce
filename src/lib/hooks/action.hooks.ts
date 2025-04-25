@@ -1,5 +1,5 @@
-// import { useToast } from "./toast.hook";
 import { HookSafeActionFn, useAction } from "next-safe-action/hooks";
+import { toast } from "sonner";
 import { Schema } from "zod";
 
 type TCustomAction = {
@@ -24,36 +24,26 @@ export const useCustomAction = ({
   successMessage,
 }: // errorMessage,
 TCustomAction) => {
-  // const { toast } = useToast();
-
   return useAction(action, {
     onSuccess:
       onSuccess ||
       (({ data }) => {
-        console.log("successs");
-        // toast({
-        //   title: "Success",
-        //   description:
-        //     successMessage ??
-        //     String(data?.message) ??
-        //     "Action Performed Successfully",
-        //   // action: (() => {}),
-        // });
+        toast("Success", {
+          description:
+            successMessage ??
+            String(data?.message) ??
+            "Action Performed Successfully",
+          // action: (() => {}),
+        });
       }),
     onError:
       onError ||
       (({ error }) => {
         console.log(error);
         console.log("errororror");
-        // toast({
-        //   title: "Error",
-        //   description:
-        //     // errorMessage ??
-        //     // String(error?.serverError ?? error?.validationErrors) ?? 'Action Failed,',
-        //     error.serverError,
-        //   variant: "destructive",
-        //   // action: (() => {}),
-        // });
+        toast("Error", {
+          description: error.serverError,
+        });
       }),
   });
 };

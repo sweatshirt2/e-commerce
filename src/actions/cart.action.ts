@@ -2,6 +2,7 @@
 
 import { actionClient } from "@/lib/safe-action";
 import { addToCartSchema } from "@/schemas/cart.schema";
+import { logger } from "@/utils/logger";
 import { PrismaClient, ProductCategory } from "@prisma/client";
 import { flattenValidationErrors } from "next-safe-action";
 import { z } from "zod";
@@ -16,14 +17,16 @@ export const feedCartAction = actionClient
   })
   .action(async (cartData) => {
     try {
-      console.log("In the cart action");
       await feedCart(cartData.parsedInput);
 
       return {
         message: "Added to cart Successfully!",
       };
     } catch (error) {
-      console.log(error);
+      logger({
+        type: "server action error in cart actions line 27",
+        message: error,
+      });
       throw Error("Error adding to cart");
     }
   });
@@ -32,13 +35,12 @@ async function feedCart(cartData: z.infer<typeof addToCartSchema>) {
   try {
     const prismaClient = new PrismaClient();
 
-    console.log("In feed cart");
-
     let existingCart = await prismaClient.cart.findUnique({
       where: { userId: cartData.userId },
       select: {
         cartProducts: {
           select: {
+            id: true,
             productId: true,
             quantity: true,
           },
@@ -67,9 +69,15 @@ async function feedCart(cartData: z.infer<typeof addToCartSchema>) {
         existingCart.cartProducts.map((product) => product.productId)
       );
 
-      const updatedCartProducts = existingCart.cartProducts.filter((product) =>
-        cartDataProductsIds.has(product.productId)
-      );
+      const updatedCartProducts = existingCart.cartProducts
+        .filter((product) => cartDataProductsIds.has(product.productId))
+        .map((product) => ({
+          id: product.id,
+          quantity:
+            (cartData.products.find(
+              (cartProduct) => cartProduct.productId === product.productId
+            )?.quantity ?? 0) + product.quantity,
+        }));
 
       const newCartProducts = cartData.products.filter(
         (product) => !existingCartProductsIds.has(product.productId)
@@ -85,7 +93,7 @@ async function feedCart(cartData: z.infer<typeof addToCartSchema>) {
                 quantity: cartProduct.quantity,
               })),
               update: updatedCartProducts.map((cartProduct) => ({
-                where: { id: cartProduct.productId },
+                where: { id: cartProduct.id },
                 data: { quantity: cartProduct.quantity },
               })),
             },
@@ -98,7 +106,10 @@ async function feedCart(cartData: z.infer<typeof addToCartSchema>) {
       message: "Added to cart successfully!",
     };
   } catch (error) {
-    console.log(error);
+    logger({
+      type: "server action error in cart actions line 107",
+      message: error,
+    });
     throw error;
   }
 }
