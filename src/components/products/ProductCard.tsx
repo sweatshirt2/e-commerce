@@ -1,3 +1,4 @@
+import Image from "next/image";
 import ProductCardButton from "./ProductCardButton";
 
 export interface ProductCardProps {
@@ -31,10 +32,17 @@ export default function ProductCard({
       "
     >
       <div className="relative rounded-2xl overflow-hidden aspect-[1/1]">
-        <img
+        {/* <img
           src={imageUrl ?? undefined}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        /> */}
+        <Image
+          src={imageUrl ?? ""}
+          alt={name}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          height={200}
+          width={100}
         />
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-5">
           <span className="text-white text-base font-medium text-center drop-shadow max-h-[80%] overflow-auto">
