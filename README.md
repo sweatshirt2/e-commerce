@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ulearna Ecommerce Site
 
-## Getting Started
+## Installation
 
-First, run the development server:
-
-```bash
+```
+npm install
+npx prisma migrate reset
+npx prisma db push
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting Started
+- Route to the catalogue page
+- Click the seed products button
+- Refresh the page, and you'll see the seeded products, then you're good to go
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Testing errors
+- Seed products again to check how I handled the error with file logging
+- Try adding products to cart before creating a user to see how I handled errors with user friendly toast notifications
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Guide
+- You can preview products by clicking on the right arrow icon on the top right of the product cards
+- Zoom in and drage within the image to see detailed pictures
+- To add products to cart, you need to choose user with the button <strong>Choose User</strong> on the top right corner of the page
+- To check your cart click on the cart button on the top right
+- Click on <strong>Confirm Order</strong> to save your cart
+- You can navigate to the dashboard to see the analytics of with tables and chart
 
-## Learn More
+## Technical Description
+- Tech Stack - Next js | next-safe-actions | Tanstack Query | Shadcn | Zod | Prisma | recharts
+- There are unused custom fetching and mutation hooks to showcase how I'm used to using tanstack 
 
-To learn more about Next.js, take a look at the following resources:
+- From the advanced features I worked on Custom management to manage the user and cart data
+- From the bonus points I've worked on Dark/Light mode and Custom persistent error logging to the /log folder of the project to make it easier to track the trace of logs and integrate tracking and logging services like winston
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Looking forward to explaining the project and showcasing my skills!  
