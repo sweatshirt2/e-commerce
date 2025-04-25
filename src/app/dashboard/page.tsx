@@ -2,7 +2,7 @@ import ProductsChart from "../../components/dashboard/charts/ProductsChart";
 import UsersTable from "../../components/dashboard/tables/UsersTable";
 import ProductsTable from "../../components/dashboard/tables/ProductsTable";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   interface User {
     id: string;
     name: string;
@@ -82,16 +82,40 @@ export default function DashboardPage() {
 
   const generateSalesData = (
     products: ProductSales[]
-  ): { name: string; sales: number }[] => {
+  ): { name: string; sold: number }[] => {
     return products.map((product) => ({
       name: product.name,
-      sales: product.sold,
+      sold: product.sold,
     }));
   };
 
   const users = mockUsers;
   const productSales = mockProductSales;
   const chartData = generateSalesData(productSales);
+
+  type TProductSales = {
+    id: string;
+    name: string;
+    sold: number;
+  }[];
+
+  type TUserConsumption = {
+    id: string;
+    name: string;
+    purchases: number;
+  }[];
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/api";
+
+  const res = await fetch(`${baseUrl}/analytics`, {
+    next: { revalidate: 60 },
+  });
+
+  const data: {
+    productsAnalytics: TProductSales;
+    userConsumption: TUserConsumption;
+  } = await res.json();
 
   return (
     <div className="p-4 md:p-6 lg:p-8 dark:bg-gray-900">
@@ -100,10 +124,10 @@ export default function DashboardPage() {
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-        <ProductsChart chartData={chartData} />
+        <ProductsChart chartData={data.productsAnalytics ?? []} />
         <div className="flex flex-col lg:flex-row gap-6">
-          <UsersTable users={users} />
-          <ProductsTable productSales={productSales} />
+          <UsersTable users={data.userConsumption ?? []} />
+          <ProductsTable productSales={data.productsAnalytics ?? []} />
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
 import { useCart, useUser } from "@/context";
+import { toast } from "sonner";
 
 type TCartFormProps = {
   productName: string;
@@ -39,8 +40,7 @@ export default function CartForm({
 
   const submit = () => {
     if (!user || !user.userId) {
-      console.log("Please select a user");
-
+      toast("Please select a user");
       return;
     }
 
@@ -52,6 +52,7 @@ export default function CartForm({
         quantity: form.getValues().toCartQuantity.toString(),
       },
     });
+    toast("Add to cart successful :)");
     closeModal();
   };
 

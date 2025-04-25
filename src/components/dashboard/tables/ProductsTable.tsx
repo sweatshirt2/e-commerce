@@ -15,13 +15,13 @@ type ProductsTableProps = {
 export default function ProductsTable({ productSales }: ProductsTableProps) {
   return (
     <div>
-      <Card className="flex-1 dark:bg-gray-800 dark:border-gray-700">
+      <Card className="flex-1 dark:bg-gray-800 dark:border-gray-700 w-full">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100 min-w-[500px]">
             Product Sales
           </CardTitle>
         </CardHeader>
-        <CardContent className="overflow-auto max-h-[400px]">
+        <CardContent className="overflow-auto max-h-[400px] w-full">
           <Table>
             <TableHeader>
               <TableRow>

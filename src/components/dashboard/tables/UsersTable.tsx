@@ -10,19 +10,19 @@ import {
 import { cn } from "@/lib/utils";
 
 type UsersTableProps = {
-  users: { name: string; id: string; purchases: number[] }[];
+  users: { name: string; id: string; purchases: number }[];
 };
 
 export default function UsersTable({ users }: UsersTableProps) {
   return (
     <div>
-      <Card className="flex-1 dark:bg-gray-800 dark:border-gray-700">
+      <Card className="flex-1 dark:bg-gray-800 dark:border-gray-700 w-full">
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             User Purchases
           </CardTitle>
         </CardHeader>
-        <CardContent className="overflow-auto max-h-[400px]">
+        <CardContent className="overflow-auto max-h-[400px] w-full">
           <Table>
             <TableHeader>
               <TableRow>
@@ -49,7 +49,7 @@ export default function UsersTable({ users }: UsersTableProps) {
                     {user.name}
                   </TableCell>
                   <TableCell className="text-gray-700 dark:text-gray-300">
-                    {user.purchases.reduce((a, b) => a + b, 0)}
+                    {user.purchases}
                   </TableCell>
                 </TableRow>
               ))}

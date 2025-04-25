@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ZoomIn, ZoomOut } from "lucide-react";
 import CartForm from "./CartForm";
 import { cn } from "@/lib/utils";
+import CustomizedToolTip from "@/components/common/CustomizedToolTip";
 
 interface ProductModalProps {
   open: boolean;
@@ -14,6 +15,10 @@ interface ProductModalProps {
   name: string;
   price: number;
   description?: string | null;
+  productColors: {
+    filePath: string;
+    color: string;
+  }[];
 }
 
 export default function ProductModal({
@@ -24,10 +29,9 @@ export default function ProductModal({
   name,
   price,
   description,
+  productColors,
 }: ProductModalProps) {
   const [zoom, setZoom] = useState(1);
-  const [quantity, setQuantity] = useState(1);
-  const [quantityError, setQuantityError] = useState<string | null>(null);
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,6 +39,7 @@ export default function ProductModal({
   const isDragging = useRef(false);
   const startX = useRef(0);
   const startY = useRef(0);
+  const [currentImageUrl, setCurrentImageUrl] = useState(imageUrl);
 
   function handleZoomIn() {
     setZoom((z) => Math.min(z + 0.25, 2.5));
@@ -42,43 +47,6 @@ export default function ProductModal({
   function handleZoomOut() {
     setZoom((z) => Math.max(z - 0.25, 1));
   }
-
-  const handleMoveLeft = () => {
-    if (imageRef.current && containerRef.current) {
-      const imageWidth = imageRef.current.offsetWidth * zoom;
-      if (positionX < 0) {
-        setPositionX((prevX) => Math.min(0, prevX + 50));
-      }
-    }
-  };
-
-  const handleMoveRight = () => {
-    if (imageRef.current && containerRef.current) {
-      const imageWidth = imageRef.current.offsetWidth * zoom;
-      const containerWidth = containerRef.current.offsetWidth;
-      if (imageWidth + positionX > containerWidth) {
-        setPositionX((prevX) => prevX - 50);
-      }
-    }
-  };
-
-  const handleMoveUp = () => {
-    if (imageRef.current && containerRef.current) {
-      if (positionY < 0) {
-        setPositionY((prevY) => Math.min(0, prevY + 50));
-      }
-    }
-  };
-
-  const handleMoveDown = () => {
-    if (imageRef.current && containerRef.current) {
-      const imageHeight = imageRef.current.offsetHeight * zoom;
-      const containerHeight = containerRef.current.offsetHeight;
-      if (imageHeight + positionY > containerHeight) {
-        setPositionY((prevY) => prevY - 50);
-      }
-    }
-  };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLImageElement>) => {
     if (zoom > 1) {
@@ -124,49 +92,6 @@ export default function ProductModal({
     }
   };
 
-  const isLeftBoundary = () => positionX >= 0;
-  const isRightBoundary = () => {
-    if (imageRef.current && containerRef.current) {
-      return (
-        imageRef.current.offsetWidth * zoom + positionX <=
-        containerRef.current.offsetWidth
-      );
-    }
-    return true;
-  };
-  const isTopBoundary = () => positionY >= 0;
-  const isBottomBoundary = () => {
-    if (imageRef.current && containerRef.current) {
-      return (
-        imageRef.current.offsetHeight * zoom + positionY <=
-        containerRef.current.offsetHeight
-      );
-    }
-    return true;
-  };
-
-  function handleQuantityChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    const num = Number(value);
-    setQuantity(num);
-    if (!value || isNaN(num) || num <= 0 || !Number.isInteger(num)) {
-      setQuantityError(
-        "Please enter a valid quantity (whole number greater than 0)."
-      );
-    } else {
-      setQuantityError(null);
-    }
-  }
-
-  function handleAddToCart() {
-    if (quantityError || quantity < 1) {
-      setQuantityError("Please enter a valid quantity before adding.");
-      return;
-    }
-
-    onOpenChange(false);
-  }
-
   const closeModal = () => {
     onOpenChange(false);
   };
@@ -199,7 +124,7 @@ export default function ProductModal({
               >
                 <img
                   ref={imageRef}
-                  src={imageUrl ?? ""}
+                  src={currentImageUrl ?? ""}
                   alt={name}
                   style={{
                     transform: `scale(${zoom}) translate(${positionX}px, ${positionY}px)`,
@@ -217,33 +142,45 @@ export default function ProductModal({
                 />
               </div>
             </div>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                aria-label="Zoom Out"
-                onClick={handleZoomOut}
-                disabled={zoom <= 1}
-              >
-                <ZoomOut className="w-5 h-5" />
-              </Button>
-              <Button
-                type="button"
-                size="icon"
-                variant="outline"
-                aria-label="Zoom In"
-                onClick={handleZoomIn}
-                disabled={zoom >= 2.5}
-              >
-                <ZoomIn className="w-5 h-5" />
-              </Button>
+            <div className="flex items-center gap-5">
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="outline"
+                  aria-label="Zoom Out"
+                  onClick={handleZoomOut}
+                  disabled={zoom <= 1}
+                >
+                  <ZoomOut className="w-5 h-5" />
+                </Button>
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="outline"
+                  aria-label="Zoom In"
+                  onClick={handleZoomIn}
+                  disabled={zoom >= 2.5}
+                >
+                  <ZoomIn className="w-5 h-5" />
+                </Button>
+              </div>
+              <div className="flex gap-2">
+                {productColors.map((color, index) => (
+                  <div
+                    key={index}
+                    className="w-4 h-4 rounded-full"
+                    style={{ backgroundColor: color.color }}
+                    onClick={() => setCurrentImageUrl(color.filePath)}
+                  ></div>
+                ))}
+              </div>
             </div>
           </div>
           <div className="flex flex-col gap-2 items-start py-2">
             <h3 className="text-xl font-semibold">{name}</h3>
             <p className="text-gray-600">{`$ ${price}`}</p>
-            <p className="text-sm font-light text-black">{description}</p>
+            <CustomizedToolTip title={"Description"} paragraph={description} />
             <CartForm
               productName={name}
               productId={id}

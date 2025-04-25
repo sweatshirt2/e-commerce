@@ -16,6 +16,7 @@ export default function SeedProductsButton() {
     action: seedProductsAction,
     onSuccess: () => {
       toast("Successfully populated data :)");
+      window.location.reload();
     },
     onError: () => {
       toast("Data already populated!");

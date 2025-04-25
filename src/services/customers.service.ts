@@ -1,5 +1,6 @@
-import { ICartProduct, TCart, TProduct } from '@/utils/types/a.types';
-import { PrismaClient } from '@prisma/client';
+import { logger } from "@/utils/logger";
+import { ICartProduct, TCart, TProduct } from "@/utils/types/a.types";
+import { PrismaClient } from "@prisma/client";
 
 export class CustomersService {
   constructor(private prisma: PrismaClient) {}
@@ -15,12 +16,15 @@ export class CustomersService {
                 productId: product.productId,
                 quantity: product.quantity,
               })),
-            }
+            },
           },
         });
       });
     } catch (error) {
-      // winston logger with sentry cloud logging
+      logger({
+        type: "server action error in customers service line 25",
+        message: error,
+      });
     }
   }
 
@@ -32,14 +36,17 @@ export class CustomersService {
           data: {
             cartProducts: {
               delete: {
-                id: productId
+                id: productId,
               },
             },
           },
         });
       });
     } catch (error) {
-      // winston logger with sentry cloud logging
+      logger({
+        type: "server action error in customers service line 47",
+        message: error,
+      });
     }
   }
 }

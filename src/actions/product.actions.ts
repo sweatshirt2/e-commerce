@@ -2,6 +2,7 @@
 
 import { productsWithColorVariants } from "@/context";
 import { actionClient } from "@/lib/safe-action";
+import { logger } from "@/utils/logger";
 import { PrismaClient, ProductCategory } from "@prisma/client";
 import { flattenValidationErrors } from "next-safe-action";
 import { z } from "zod";
@@ -22,23 +23,26 @@ export const seedProductsAction = actionClient
         message: "Products Seeded Successfully!",
       };
     } catch (error) {
-      console.log(error);
+      logger({
+        type: "server action error in product actions line 27",
+        message: error,
+      });
       throw Error("Error seeding products");
     }
   });
 
 async function seedProducts() {
   const furnitureItems = [
-    {
-      name: "Oak Dining Table",
-      price: 799.99,
-      quantity: 5,
-      description: "Solid oak dining table with a natural finish.",
-      category: ProductCategory.KITCHEN,
-      imageUrl: "../../../images/assessment-sofa1.jpg",
-      productColors: [],
-    },
     ...productsWithColorVariants,
+    // {
+    //   name: "Oak Dining Table",
+    //   price: 799.99,
+    //   quantity: 5,
+    //   description: "Solid oak dining table with a natural finish.",
+    //   category: ProductCategory.KITCHEN,
+    //   imageUrl: "../../../images/assessment-sofa1.jpg",
+    //   productColors: [],
+    // },
     // {
     //   name: "Leather Sofa",
     //   price: 1299.5,
@@ -161,34 +165,22 @@ async function seedProducts() {
     const prismaClient = new PrismaClient();
 
     for (const product of furnitureItems) {
-      // await prismaClient.product.create({
-      //   data: {
-      //     name: product.name,
-      //     price: product.price,
-      //     quantity: product.quantity,
-      //     description: product.description,
-      //     category: product.category,
-      //     imageUrl: product.imageUrl,
-      //     productColors: {
-      //       create: product.productColors,
-      //     },
-      //   }
-      // });
-    }
-
-    await prismaClient.product.createMany({
-      data: furnitureItems.map((item) => ({
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        description: item.description,
-        category: item.category,
-        imageUrl: item.imageUrl,
-        productColors: {
-          create: item.productColors,
+      await prismaClient.product.create({
+        data: {
+          name: product.name,
+          price: product.price,
+          quantity: product.quantity,
+          description: product.description,
+          category: product.category,
+          imageUrl: product.imageUrl,
+          productColors: {
+            createMany: {
+              data: product.productColors,
+            },
+          },
         },
-      })),
-    });
+      });
+    }
 
     await prismaClient.user.createMany({
       data: users,
@@ -212,7 +204,10 @@ async function seedProducts() {
       message: "Data Seeded Successfully!",
     };
   } catch (error) {
-    console.log(error);
+    logger({
+      type: "server action error in product actions line 204",
+      message: error,
+    });
     throw error;
   }
 }

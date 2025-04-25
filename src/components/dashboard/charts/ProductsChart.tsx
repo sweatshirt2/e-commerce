@@ -13,7 +13,7 @@ import {
 } from "recharts";
 
 type ProductsChartProps = {
-  chartData: { name: string; sales: number }[];
+  chartData: { name: string; sold: number }[];
 };
 
 export default function ProductsChart({ chartData }: ProductsChartProps) {
@@ -61,7 +61,7 @@ export default function ProductsChart({ chartData }: ProductsChartProps) {
               <Legend wrapperStyle={{ color: "#374151" }} />
               <Line
                 type="monotone"
-                dataKey="sales"
+                dataKey="sold"
                 stroke="#8884d8"
                 activeDot={{ r: 8 }}
                 strokeWidth={2}

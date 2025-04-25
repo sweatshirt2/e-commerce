@@ -7,6 +7,10 @@ export interface ProductCardProps {
   quantity: number;
   imageUrl?: string | null;
   description?: string | null;
+  productColors: {
+    filePath: string;
+    color: string;
+  }[];
 }
 
 export default function ProductCard({
@@ -17,6 +21,7 @@ export default function ProductCard({
   quantity,
   description,
   imageUrl,
+  productColors,
 }: ProductCardProps) {
   return (
     <div
@@ -31,7 +36,7 @@ export default function ProductCard({
           alt={name}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-5">
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-5">
           <span className="text-white text-base font-medium text-center drop-shadow max-h-[80%] overflow-auto">
             {description}
           </span>
@@ -47,6 +52,7 @@ export default function ProductCard({
             price={price}
             quantity={quantity}
             description={description}
+            productColors={productColors}
           />
         </button>
       </div>

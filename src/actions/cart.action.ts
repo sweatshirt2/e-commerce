@@ -2,6 +2,7 @@
 
 import { actionClient } from "@/lib/safe-action";
 import { addToCartSchema } from "@/schemas/cart.schema";
+import { logger } from "@/utils/logger";
 import { PrismaClient, ProductCategory } from "@prisma/client";
 import { flattenValidationErrors } from "next-safe-action";
 import { z } from "zod";
@@ -16,14 +17,16 @@ export const feedCartAction = actionClient
   })
   .action(async (cartData) => {
     try {
-      console.log("In the cart action");
       await feedCart(cartData.parsedInput);
 
       return {
         message: "Added to cart Successfully!",
       };
     } catch (error) {
-      console.log(error);
+      logger({
+        type: "server action error in cart actions line 27",
+        message: error,
+      });
       throw Error("Error adding to cart");
     }
   });
@@ -31,8 +34,6 @@ export const feedCartAction = actionClient
 async function feedCart(cartData: z.infer<typeof addToCartSchema>) {
   try {
     const prismaClient = new PrismaClient();
-
-    console.log("In feed cart");
 
     let existingCart = await prismaClient.cart.findUnique({
       where: { userId: cartData.userId },
@@ -105,7 +106,10 @@ async function feedCart(cartData: z.infer<typeof addToCartSchema>) {
       message: "Added to cart successfully!",
     };
   } catch (error) {
-    console.log(error);
+    logger({
+      type: "server action error in cart actions line 107",
+      message: error,
+    });
     throw error;
   }
 }
