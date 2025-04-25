@@ -108,9 +108,7 @@ export default async function DashboardPage() {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/api";
 
-  const res = await fetch(`${baseUrl}/analytics`, {
-    next: { revalidate: 60 },
-  });
+  const res = await fetch(`${baseUrl}/analytics`);
 
   const data: {
     productsAnalytics: TProductSales;
