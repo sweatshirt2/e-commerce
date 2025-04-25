@@ -28,6 +28,15 @@ npm run dev
 
 ## Technical Description
 - Tech Stack - Next js | next-safe-actions | Tanstack Query | Shadcn | Zod | Prisma | recharts
+      - next-safe-actions: for running reusable actions wrapper with zod validation, customized error handling, easier request state management
+      - tanstack: for querying and invalidating specific data on mutations, maintain data persistence
+      - Shadcn: for customizable and easy to configure react components
+      - zod: validation
+      - prisma: persisted data management
+      - recharts: beautiful and easy to develop and use line graph
+
+      - I didn't use tanstack for querying data as using hooks would defeat the purpose of the server side rendering next js provides
+  
 - There are unused custom fetching and mutation hooks to showcase how I'm used to using tanstack 
 
 - From the advanced features I worked on Custom management to manage the user and cart data
