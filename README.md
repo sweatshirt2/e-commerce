@@ -33,6 +33,9 @@ npm run dev
 - From the advanced features I worked on Custom management to manage the user and cart data
 - From the bonus points I've worked on Dark/Light mode and Custom persistent error logging to the /log folder of the project to make it easier to track the trace of logs and integrate tracking and logging services like winston
 
+### PS:
+      To showcase how I work with version control systems checkout my prs, commit messages, and branch naming
+
 
 
 ### Looking forward to explaining the project and showcasing my skills!  
