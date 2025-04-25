@@ -9,5 +9,3 @@ dist
 node_modules
 
 logs
-
-prisma/db
